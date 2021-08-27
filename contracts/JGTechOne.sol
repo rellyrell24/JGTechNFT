@@ -22,16 +22,20 @@ contract JGTechOne is ERC721Tradable{
         tokenIdToHash[_tokenId] = _hash;
         _tokenCounter = _tokenCounter + 1;
         _mint(_to, _tokenId);
-        tokenURI(_tokenId);
+        tokenURI(_tokenId, _hash);
         return _tokenId;
     }
 
     function _hashExists(string memory _hash) internal view returns (bool) {
-        for (uint8 i = 0; i <= _tokenCounter; i++) {
+        for (uint8 i = 1; i <= _tokenCounter; i++) {
             if (keccak256(bytes(tokenIdToHash[i])) == keccak256(bytes(_hash))) {
                 return true;
             }
         }
         return false;
+    }
+
+    function getHash(uint8 _tokenId) public view onlyOwner returns (string memory _hash) {
+        _hash = tokenIdToHash[_tokenId];
     }
 }
